@@ -4,7 +4,7 @@ using System.Collections;
 
 public class MainMenuControl : MonoBehaviour {
 
-	public Menu CreditsMenu;
+	//public Menu CreditsMenu;
 	public Button CreditsButton;
 	public Button TrainingButton;
 	public Button CockFightButton;
@@ -29,15 +29,16 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	void OpenCredits() {
-		Application.OpenCreditsMenu();
+		//Application.OpenCreditsMenu();
 	}
 	
 	void OpenTraining() {
-		Application.LoadLevel(Training1);
+		//Application.LoadLevel(Training1);
 	}
 	
-	void OpenCockFight() {
-		Application.LoadLevel(CockFight1);
+	public void OpenCockFight() {
+		//Application.LoadLevel(CockFight1);
+		Application.LoadLevel ("Prototype");
 	}
 	
 	void OpenChickenWaffles() {
