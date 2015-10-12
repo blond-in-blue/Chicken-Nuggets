@@ -4,7 +4,11 @@ using System.Collections;
 
 public class MainMenuControl : MonoBehaviour {
 
+<<<<<<< Updated upstream
 	//public Menu CreditsMenu;
+=======
+	public Canvas CreditsMenu;
+>>>>>>> Stashed changes
 	public Button CreditsButton;
 	public Button TrainingButton;
 	public Button CockFightButton;
@@ -29,6 +33,7 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	void OpenCredits() {
+<<<<<<< Updated upstream
 		//Application.OpenCreditsMenu();
 	}
 	
@@ -39,6 +44,17 @@ public class MainMenuControl : MonoBehaviour {
 	public void OpenCockFight() {
 		//Application.LoadLevel(CockFight1);
 		Application.LoadLevel ("Prototype");
+=======
+		//	Application.OpenCreditsMenu();
+	}
+	
+	void OpenTraining() {
+		//  Application.LoadLevel(Training1);
+	}
+	
+	void OpenCockFight() {
+		//  Application.LoadLevel(CockFight1);
+>>>>>>> Stashed changes
 	}
 	
 	void OpenChickenWaffles() {
