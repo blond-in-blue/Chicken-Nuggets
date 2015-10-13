@@ -7,8 +7,6 @@ public class MainMenuControl : MonoBehaviour {
 
 	public Canvas CreditsMenu;
 	public Canvas QuitMenu;
-		//  public Button QuitMenuCancelButton;
-		//  public Button QuitMenuQuitButton;
 	public Button QuitGameButton;
 	public Button CreditsButton;
 	public Button TrainingButton;
@@ -36,6 +34,7 @@ public class MainMenuControl : MonoBehaviour {
 		
 	}
 	
+	// Disables all main menu buttons while the quit menu is opened.
 	public void OpenQuitMenu() {
 		
 		QuitMenu.enabled = true;
@@ -47,6 +46,7 @@ public class MainMenuControl : MonoBehaviour {
 		ChickenSkewerButton.enabled = false;
 	}
 	
+	// Re-enables all main menu buttons when the quit menu is closed. 
 	public void QuitMenuCancel() {
 		
 		QuitMenu.enabled = false;
@@ -64,15 +64,17 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	public void OpenCredits() {
+		
 		//Application.OpenCreditsMenu();
 	}
 	
 	public void OpenTraining() {
+		
 		//Application.LoadLevel(Training1);
 	}
 	
 	public void OpenCockFight() {
-		//Application.LoadLevel(CockFight1);
+		
 		Application.LoadLevel("Prototype");
 	}
 	
