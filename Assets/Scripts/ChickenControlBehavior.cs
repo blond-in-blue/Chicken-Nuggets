@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum ChickenState { free, dashing, strafing, juicing, takingDamage }
+
 public class ChickenControlBehavior : MonoBehaviour {
 
 	public GameObject target = null;
@@ -11,7 +13,6 @@ public class ChickenControlBehavior : MonoBehaviour {
 	public float gravity = 20.0F;
 	public float power = 5f;
 	
-	enum ChickenState {free, dashing, strafing, juicing, takingDamage}
 	ChickenState currentState = ChickenState.free;
 
 	// Use this for initialization
@@ -20,6 +21,16 @@ public class ChickenControlBehavior : MonoBehaviour {
 		controller = GetComponent<CharacterController> ();
 	
 	}
+
+
+    /// <summary>
+    /// Returns the current state the chicken is in
+    /// </summary>
+    /// <returns></returns>
+    public ChickenState getCurrentChickenState()
+    {
+        return currentState;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -162,18 +173,52 @@ public class ChickenControlBehavior : MonoBehaviour {
 	Vector3 dashingDirection = Vector3.zero;
 	float dashStartTime = 0f;
 
-	/// <summary>
-	/// The update for dashing every frame incase the chicken is in the dashing state.
-	/// </summary>
-	void dashUpdate(){
+    //How  long it takes to dash
+    [SerializeField]
+    float dashingDuration = .25f;
+
+    /// <summary>
+    /// How much time the chicken will spend dashing, before it enters it's recovery period
+    /// </summary>
+    /// <returns></returns>
+    public float getDashingDuration()
+    {
+        return dashingDuration;
+    }
+
+    //How long it takes to recover after dashing
+    [SerializeField]
+    float recoveryDuration = .15f;
+
+    /// <summary>
+    /// Returns the length it takes for the chicken to recover after it dashes
+    /// During this recovery period the chicken can not move, but is still considered
+    /// to be in it's dash state
+    /// </summary>
+    /// <returns></returns>
+    public float getRecoveryDuration()
+    {
+        return recoveryDuration;
+    }
+
+    /// <summary>
+    /// If the chicken is in it's dash state, then it will return the amount of time
+    /// in seconds of how much time left the chicken will be in this state.
+    /// </summary>
+    /// <returns></returns>
+    public float timeLeftInDash()
+    {
+        return (recoveryDuration + dashingDuration) - (Time.time - dashStartTime);
+    }
+
+    /// <summary>
+    /// The update for dashing every frame incase the chicken is in the dashing state.
+    /// </summary>
+    void dashUpdate(){
 
 		if (currentState != ChickenState.dashing) {
 			return;
 		}
-
-		//Variables for dashing and recovery
-		float dashingDuration = .25f;
-		float recoveryDuration = .15f;
 
 		//if we're still dashing
 		if (Time.time - dashStartTime < dashingDuration) {
