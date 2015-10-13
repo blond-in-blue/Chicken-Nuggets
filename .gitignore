@@ -56,4 +56,6 @@ Temp
 *.pidb
 Build
 
-.vscode/launch.json
+.vscode
+Assets/VSCode
+Assets/VSCode.meta
