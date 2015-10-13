@@ -6,6 +6,10 @@ public class MainMenuControl : MonoBehaviour {
 
 
 	public Canvas CreditsMenu;
+	public Canvas QuitMenu;
+		//  public Button QuitMenuCancelButton;
+		//  public Button QuitMenuQuitButton;
+	public Button QuitGameButton;
 	public Button CreditsButton;
 	public Button TrainingButton;
 	public Button CockFightButton;
@@ -16,6 +20,9 @@ public class MainMenuControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
+		QuitMenu = QuitMenu.GetComponent<Canvas> ();
+		QuitMenu.enabled = false;
+		QuitGameButton = QuitGameButton.GetComponent<Button> ();
 		CreditsButton = CreditsButton.GetComponent<Button> ();
 		TrainingButton = TrainingButton.GetComponent<Button> ();
 		CockFightButton = CockFightButton.GetComponent<Button> ();
@@ -29,11 +36,38 @@ public class MainMenuControl : MonoBehaviour {
 		
 	}
 	
-	void OpenCredits() {
+	public void OpenQuitMenu() {
+		
+		QuitMenu.enabled = true;
+		QuitGameButton.enabled = false;
+		CreditsButton.enabled = false;
+		TrainingButton.enabled = false;
+		CockFightButton.enabled = false;
+		ChickenWafflesButton.enabled = false;
+		ChickenSkewerButton.enabled = false;
+	}
+	
+	public void QuitMenuCancel() {
+		
+		QuitMenu.enabled = false;
+		QuitGameButton.enabled = true;
+		CreditsButton.enabled = true;
+		TrainingButton.enabled = true;
+		CockFightButton.enabled = true;
+		ChickenWafflesButton.enabled = true;
+		ChickenSkewerButton.enabled = true;
+	}
+	
+	public void QuitGame() {
+		
+		Application.Quit();
+	}
+	
+	public void OpenCredits() {
 		//Application.OpenCreditsMenu();
 	}
 	
-	void OpenTraining() {
+	public void OpenTraining() {
 		//Application.LoadLevel(Training1);
 	}
 	
@@ -42,11 +76,11 @@ public class MainMenuControl : MonoBehaviour {
 		Application.LoadLevel("Prototype");
 	}
 	
-	void OpenChickenWaffles() {
+	public void OpenChickenWaffles() {
 		
 	}
 	
-	void OpenChickenSkewer() {
+	public void OpenChickenSkewer() {
 		
 	}
 }
