@@ -60,7 +60,10 @@ public class MainMenuControl : MonoBehaviour {
 	
 	public void QuitGame() {
 		
+		// Exits the game if it's being run as an executable.
 		Application.Quit();
+		// Stops the debug session if in debug mode.
+		Debug.Break();
 	}
 	
 	public void OpenCredits() {
