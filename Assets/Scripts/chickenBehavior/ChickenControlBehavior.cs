@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ChickenState { free, dashing, strafing, juicing, takingDamage }
+public enum ChickenState { free, dashing, strafing, juicing, takingDamage, dead }
 
 
 public class ChickenControlBehavior : MonoBehaviour {
@@ -16,6 +16,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	public float gravity = 20.0F;
 	public float power = 5f;
 	public ChickenTeamList.ChickenTeam team = ChickenTeamList.ChickenTeam.Red;
+	public float health = 5F;
 	
 	ChickenState currentState = ChickenState.free;
 
@@ -68,12 +69,13 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 		if(currentState == ChickenState.dashing && dashingDirection == Vector3.forward){
 
+
 			ChickenControlBehavior otherChicken = collision.gameObject.GetComponent<ChickenControlBehavior>();
 
 			if(otherChicken != null && otherChicken.team != team){//added here disables friendly fire
 			
 				otherChicken.takeDamage(power);
-				print ("damage delt"); // added here check to see if damage is being delt
+
 
 
 			} else if (collision.transform.tag == "Hitbox"){
@@ -93,6 +95,8 @@ public class ChickenControlBehavior : MonoBehaviour {
 		currentState = ChickenState.takingDamage;
 		damageStartTime = Time.time;
 		transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.red;
+		health -= damageAmount;
+		print ("health hit");
 	}
 
 	void takeDamageUpdate(){
@@ -108,8 +112,28 @@ public class ChickenControlBehavior : MonoBehaviour {
 			transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.white;
 			currentState = ChickenState.free;
 		}
+		// added check to see if player is dead
+		if (health <= 0) {
+			currentState = ChickenState.dead;
+		}
 
 	}
+
+	void deadUpdate(){
+		if (currentState != ChickenState.dead) {
+			return;
+		}
+
+		print ("You are dead!!!");
+		speed = 0;
+		jumpSpeed = 0;
+		team = ChickenTeamList.ChickenTeam.Dead;
+
+		transform.FindChild ("graphics").GetComponent<MeshRenderer> ().material.color = Color.green;
+	}
+
+
+
 
 	/// <summary>
 	/// Has the chicken dash forward quickly and hurt things infront of it
