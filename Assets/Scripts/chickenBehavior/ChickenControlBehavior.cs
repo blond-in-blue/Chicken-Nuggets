@@ -3,7 +3,10 @@ using System.Collections;
 
 public enum ChickenState { free, dashing, strafing, juicing, takingDamage }
 
+
 public class ChickenControlBehavior : MonoBehaviour {
+
+
 
 	public GameObject target = null;
 	CharacterController controller;
@@ -12,6 +15,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	public float jumpSpeed = 8.0F;
 	public float gravity = 20.0F;
 	public float power = 5f;
+	public ChickenTeamList.ChickenTeam team = ChickenTeamList.ChickenTeam.Red;
 	
 	ChickenState currentState = ChickenState.free;
 
@@ -66,9 +70,11 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 			ChickenControlBehavior otherChicken = collision.gameObject.GetComponent<ChickenControlBehavior>();
 
-			if(otherChicken != null){
-
+			if(otherChicken != null && otherChicken.team != team){//added here disables friendly fire
+			
 				otherChicken.takeDamage(power);
+				print ("damage delt"); // added here check to see if damage is being delt
+
 
 			} else if (collision.transform.tag == "Hitbox"){
 				//play a ting noise like in smashbros.
