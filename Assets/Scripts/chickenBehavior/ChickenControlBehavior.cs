@@ -53,9 +53,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 		lookAtTargetUpdate ();
 
-
 		movementUpdate ();
-
 
 		switch(currentState){
 
@@ -73,6 +71,23 @@ public class ChickenControlBehavior : MonoBehaviour {
 			
 		}
 
+	}
+
+	/// <summary>
+	/// Returns what the chicken is currentely focused on as it's target
+	/// </summary>
+	/// <returns>The target.</returns>
+	public GameObject getTarget(){
+		return target;
+	}
+
+	/// <summary>
+	/// Set's the new target for the chicken to focus on.
+	/// Setting the target to null turns off lock on.
+	/// </summary>
+	/// <param name="newTarget">New target.</param>
+	public void setTarget(GameObject newTarget){
+		this.target = newTarget;
 	}
 
 	/// <summary>
