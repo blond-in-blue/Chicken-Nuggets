@@ -74,6 +74,22 @@ public class ChickenControlBehavior : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Gets what team the chicken is currentely fighting for
+	/// </summary>
+	/// <returns>The chickens team.</returns>
+	public ChickenTeam getChickensTeam(){
+		return team;
+	}
+
+	/// <summary>
+	/// Changes what team the chicken is currentely on.
+	/// </summary>
+	/// <param name="team">Team.</param>
+	public void setChickensTeam(ChickenTeam team){
+		this.team = team;
+	}
+
+	/// <summary>
 	/// Returns what the chicken is currentely focused on as it's target
 	/// </summary>
 	/// <returns>The target.</returns>
