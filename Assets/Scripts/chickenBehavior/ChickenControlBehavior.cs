@@ -26,7 +26,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	[SerializeField]
 	ChickenTeam team = ChickenTeam.Red;
 
-    private static float maxHealth = 5F; // For use in ChickenAttackAIBehavior
+    private static float maxHealth = 20F; // For use in ChickenAttackAIBehavior
 
     [SerializeField]
     float health = maxHealth;
@@ -59,6 +59,15 @@ public class ChickenControlBehavior : MonoBehaviour {
     public float getMaxHealth()
     {
         return maxHealth;
+    }
+
+    /// <summary>
+    /// Returns the current health of the chicken
+    /// </summary>
+    /// <returns> The current health of the chicken. </returns>
+    public float getCurrentHealth()
+    {
+        return health;
     }
 	
 	// Update is called once per frame

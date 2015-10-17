@@ -15,13 +15,13 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// </summary>
 	private struct Percept {
 
-		public int curHealth;
+		public float curHealth;
         public int numOfTeamates;
         public float[] teamatesHealths;
         public float[] teamatesDistancesFromUs;
         public float[] teamatesDistancesFromTarget;
 
-        public int targetHealth;
+        public float targetHealth;
         public int numOfTargetAllies;
         public float[] targetsAlliesHealths;
         public float[] targetsAlliesDistancesFromTarget;
@@ -168,7 +168,7 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The appeal of invading the target</returns>
 	/// <param name="percept">Percept, environment we're evaluating</param>
 	float appealOfEvading(Percept percept){
-        // If the player is dashing and enemy is low health, enemy wants to evade
+        // If the enemy is dashing and we are low health, we want to evade
         if (target.getCurrentChickenState() == ChickenState.Dashing){
             return 1 - (percept.curHealth / control.getMaxHealth());
         }
@@ -193,13 +193,36 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The percept at this instance.</returns>
 	Percept getPerceptAtThisInstance(){
 
-		//The distance we are away from our target.
-		//float distanceFromTarget = Vector3.Distance (this.transform.position, target.transform.position);
-		
-		//The state our target is in.
-		//ChickenState targetCurrentState = target.getCurrentChickenState ();
+        // Make a new Percept
+        Percept newPercept = new Percept();
 
-		return new Percept();
+        // Formula for distance of chickens, necessary for team calculations
+		//              The distance we are away from our target.
+		//              float distanceFromTarget = Vector3.Distance (control.transform.position, target.transform.position);
+		
+		
+
+        // Calculate values for all of percept fields in order of struct definition
+        float curHealth = control.getCurrentHealth();
+        // Find number of teammates and:
+        //              public float[] teamatesHealths;
+        //              public float[] teamatesDistancesFromUs;
+        //              public float[] teamatesDistancesFromTarget;
+
+        float targetHealth = target.getCurrentHealth();
+        //              public int numOfTargetAllies;
+        //              public float[] targetsAlliesHealths;
+        //              public float[] targetsAlliesDistancesFromTarget;
+        //              public float[] targetsAlliesDistancesFromUs;
+        ChickenState targetCurrentState = target.getCurrentChickenState();
+
+        // Now assign all values to the struct in order of struct definition
+        newPercept.curHealth = curHealth;
+        newPercept.targetHealth = targetHealth;
+        newPercept.targetState = targetCurrentState;
+
+        // Finally return the new Percept instance
+        return newPercept;
 	}
 
 
