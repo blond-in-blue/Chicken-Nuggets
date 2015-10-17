@@ -2,4 +2,4 @@
 using System.Collections;
 
 
-public enum ChickenTeam {Red, Blue, Black, Yellow, Dead};
+public enum ChickenTeam {Red, Blue, Black, Yellow, Dead, None};

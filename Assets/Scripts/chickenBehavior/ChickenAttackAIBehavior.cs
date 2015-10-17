@@ -54,6 +54,18 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Changes whatever the chickens target is.
+	/// </summary>
+	/// <param name="chickenControl">Chicken control.</param>
+	public void setTarget(ChickenControlBehavior target){
+		if (target == null) {
+			return;
+		}
+
+		this.target = target;
+	}
+
+	/// <summary>
 	/// The update called to run the agents thinking and allows it to make it's moves.
 	/// </summary>
 	void AIUpdate(){
@@ -66,16 +78,12 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 
 		float invadingAppeal = appealOfInvading (currentPercept);
 
-		if (attackingAppeal >= evadingAppeal && attackingAppeal >= invadingAppeal) {
-			attackUpdate();
-		}
-
-		if (evadingAppeal >= attackingAppeal && evadingAppeal >= invadingAppeal) {
-			evadeUpdate();
-		} 
-
 		if (invadingAppeal >= evadingAppeal && invadingAppeal >= attackingAppeal) {
 			invadeUpdate();
+		} else  if (attackingAppeal >= evadingAppeal && attackingAppeal >= invadingAppeal) {
+			attackUpdate();
+		} else if (evadingAppeal >= attackingAppeal && evadingAppeal >= invadingAppeal) {
+			evadeUpdate();
 		} 
 
 	}
@@ -95,7 +103,7 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// it will start calling this function
 	/// </summary>
 	void evadeUpdate(){
-		control.moveForward ();
+		control.moveBackward ();
 	}
 
 	/// <summary>
@@ -104,7 +112,7 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// it will start calling this function
 	/// </summary>
 	void invadeUpdate(){
-		control.moveBackward ();
+		control.moveForward ();
 	}
 
 	/// <summary>
