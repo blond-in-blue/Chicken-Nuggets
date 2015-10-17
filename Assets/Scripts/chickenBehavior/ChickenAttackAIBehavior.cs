@@ -15,18 +15,18 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// </summary>
 	private struct Percept {
 
-		int curHealth;
-		int numOfTeamates;
-		float[] teamatesHealths;
-		float[] teamatesDistancesFromUs;
-		float[] teamatesDistancesFromTarget;
+		public int curHealth;
+        public int numOfTeamates;
+        public float[] teamatesHealths;
+        public float[] teamatesDistancesFromUs;
+        public float[] teamatesDistancesFromTarget;
 
-		int targetHealth;
-		int numOfTargetAllies;
-		float[] targetsAlliesHealths;
-		float[] targetsAlliesDistancesFromTarget;
-		float[] targetsAlliesDistancesFromUs;
-		ChickenState targetState;
+        public int targetHealth;
+        public int numOfTargetAllies;
+        public float[] targetsAlliesHealths;
+        public float[] targetsAlliesDistancesFromTarget;
+        public float[] targetsAlliesDistancesFromUs;
+        public ChickenState targetState;
 
 	}
 
@@ -123,6 +123,40 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The appeal of attacking the target</returns>
 	/// <param name="percept">Percept, environment we're evaluating</param>
 	float appealOfAttacking(Percept percept){
+        // If the enemy is not dashing and we are at med-high health, we want to attack
+        if (target.getCurrentChickenState() != ChickenState.Dashing)
+        {
+            // If enemy is within attack range (roughly 3.4 units)
+            if (Vector3.Distance(target.transform.position, control.transform.position) <= 3.5)
+            {    
+                // If we have moderate HP
+                if (percept.curHealth / control.getMaxHealth() >= .45F)
+                {
+                    return 1;
+                }
+
+                // If we have subpar HP
+                if (percept.curHealth / control.getMaxHealth() < .45F)
+                {
+                    // If we have teammates nearby
+                    if (percept.numOfTeamates > 1)
+                    {
+                        return 1;
+                    }
+                    return 0.5F; // Attack if we must
+                }
+            }
+        }
+
+        // If enemy is dashing
+        if (target.getCurrentChickenState() == ChickenState.Dashing)
+        {
+            if (percept.curHealth / control.getMaxHealth() >= .45F)
+            {
+                return 0.5F; // If we have moderate HP, might as well attack
+            }
+            return 0.3F; // Only attack if we really need to
+        }
 		return 0;
 	}
 
@@ -134,6 +168,10 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The appeal of invading the target</returns>
 	/// <param name="percept">Percept, environment we're evaluating</param>
 	float appealOfEvading(Percept percept){
+        // If the player is dashing and enemy is low health, enemy wants to evade
+        if (target.getCurrentChickenState() == ChickenState.Dashing){
+            return 1 - (percept.curHealth / control.getMaxHealth());
+        }
 		return 0;
 	}
 
