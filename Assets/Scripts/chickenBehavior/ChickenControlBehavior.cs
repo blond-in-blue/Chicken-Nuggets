@@ -1,24 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ChickenState { free, dashing, strafing, juicing, takingDamage, dead }
-
-
+/// <summary>
+/// Chicken control behavior.
+/// Every chicken should have this behavior which allows different things to 
+/// control a chicken (Player or AI) by calling the methods of this class.
+/// </summary>
 public class ChickenControlBehavior : MonoBehaviour {
-
-
 
 	public GameObject target = null;
 	CharacterController controller;
+
+	[SerializeField]
+	float speed = 4.5f;
+
+	[SerializeField]
+	float jumpSpeed = 8.0F;
+
+	[SerializeField]
+	float gravity = 20.0F;
+
+	[SerializeField]
+	float power = 5f;
+
+	[SerializeField]
+	ChickenTeam team = ChickenTeam.Red;
+
+	[SerializeField]
+	float health = 5F;
 	
-	public float speed = 4.5f;
-	public float jumpSpeed = 8.0F;
-	public float gravity = 20.0F;
-	public float power = 5f;
-	public ChickenTeamList.ChickenTeam team = ChickenTeamList.ChickenTeam.Red;
-	public float health = 5F;
-	
-	ChickenState currentState = ChickenState.free;
+	ChickenState currentState = ChickenState.Free;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +42,7 @@ public class ChickenControlBehavior : MonoBehaviour {
     /// <summary>
     /// Returns the current state the chicken is in
     /// </summary>
-    /// <returns></returns>
+    /// <returns> The state that the chicken is in. </returns>
     public ChickenState getCurrentChickenState()
     {
         return currentState;
@@ -42,13 +53,32 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 		lookAtTargetUpdate ();
 
-		dashUpdate ();
 
 		movementUpdate ();
 
-		takeDamageUpdate ();
+
+		switch(currentState){
+
+			case ChickenState.Dead:
+				deadUpdate();
+			break;
+
+			case ChickenState.Dashing:
+				dashUpdate ();
+			break;
+
+			case ChickenState.TakingDamage:
+				takeDamageUpdate ();
+			break;
+			
+		}
+
 	}
 
+	/// <summary>
+	/// Update of the chicken movement of anything outside of external control.
+	/// This includes things like gravity.
+	/// </summary>
 	void movementUpdate(){
 
 		//simulate gravity
@@ -59,23 +89,25 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// This is called when one of our hitboxes collides with something while we're attacking.
+	/// </summary>
+	/// <param name="collision">Collision, the collision that took place</param>
 	void hitBoxCollisionEnter(Collision collision){
 
-
+		//If we hit ourself some how...
 		if (collision.gameObject.transform == this.transform) {
 			return;
 		}
 
 
-		if(currentState == ChickenState.dashing && dashingDirection == Vector3.forward){
-
+		if(currentState == ChickenState.Dashing && dashingDirection == Vector3.forward){
 
 			ChickenControlBehavior otherChicken = collision.gameObject.GetComponent<ChickenControlBehavior>();
 
 			if(otherChicken != null && otherChicken.team != team){//added here disables friendly fire
 			
 				otherChicken.takeDamage(power);
-
 
 
 			} else if (collision.transform.tag == "Hitbox"){
@@ -91,17 +123,25 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 	float damageStartTime = 0;
 
+	/// <summary>
+	/// Puts the chicken in a taking damage state and subtracts health from the chicken
+	/// </summary>
+	/// <param name="damageAmount">Damage amount.</param>
 	public void takeDamage(float damageAmount){
-		currentState = ChickenState.takingDamage;
+		currentState = ChickenState.TakingDamage;
 		damageStartTime = Time.time;
 		transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.red;
 		health -= damageAmount;
 		print ("health hit");
 	}
 
+	/// <summary>
+	/// Update function called while the chicken is in the taking damage state.
+	/// Acts as a stun and animates the chicken indicating damage was taken
+	/// </summary>
 	void takeDamageUpdate(){
 
-		if (currentState != ChickenState.takingDamage) {
+		if (currentState != ChickenState.TakingDamage) {
 			return;
 		}
 
@@ -110,29 +150,39 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 		if (Time.time - damageStartTime > stunTime) {
 			transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.white;
-			currentState = ChickenState.free;
+			currentState = ChickenState.Free;
 		}
 		// added check to see if player is dead
 		if (health <= 0) {
-			currentState = ChickenState.dead;
+			enterDeadState();
 		}
 
 	}
 
+	/// <summary>
+	/// Used to transition to the dead state.
+	/// </summary>
+	void enterDeadState(){
+		currentState = ChickenState.Dead;
+	}
+
+	/// <summary>
+	/// The Update function that is called when the chicken is dead.
+	/// </summary>
 	void deadUpdate(){
-		if (currentState != ChickenState.dead) {
+
+		if (currentState != ChickenState.Dead) {
 			return;
 		}
 
 		print ("You are dead!!!");
 		speed = 0;
 		jumpSpeed = 0;
-		team = ChickenTeamList.ChickenTeam.Dead;
+		team = ChickenTeam.Dead;
 
 		transform.FindChild ("graphics").GetComponent<MeshRenderer> ().material.color = Color.green;
+	
 	}
-
-
 
 
 	/// <summary>
@@ -190,7 +240,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 		dashStartTime = Time.time;
 
 		//Change state to dashing
-		currentState = ChickenState.dashing;
+		currentState = ChickenState.Dashing;
 
 		//Set the direction of the dash for the update function
 		dashingDirection = direction;
@@ -246,7 +296,7 @@ public class ChickenControlBehavior : MonoBehaviour {
     /// </summary>
     void dashUpdate(){
 
-		if (currentState != ChickenState.dashing) {
+		if (currentState != ChickenState.Dashing) {
 			return;
 		}
 
@@ -267,9 +317,18 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// If the chicken is currentely dashing then it leaves the dashing state
+	/// and goes back into a free state open to control.
+	/// </summary>
 	void stopDashing(){
+
+		if (currentState != ChickenState.Dashing) {
+			return;
+		}
+
 		dashingDirection = Vector3.zero;
-		currentState = ChickenState.free;
+		currentState = ChickenState.Free;
 		transform.FindChild("hitbox").GetComponent<Rigidbody>().isKinematic = true;
 		transform.FindChild("hitbox").GetComponent<SphereCollider>().enabled = false;
 	}
@@ -364,7 +423,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	/// <returns><c>true</c>, if can move, <c>false</c> otherwise.</returns>
 	bool canMove (){
 
-		if (currentState == ChickenState.free && controller.isGrounded) {
+		if (currentState == ChickenState.Free && controller.isGrounded) {
 			return true;
 		}
 
@@ -378,7 +437,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	/// </summary>
 	/// <returns><c>true</c>, if chicken can dash, <c>false</c> otherwise.</returns>
 	bool canDash(){
-		if (currentState == ChickenState.free && controller.isGrounded) {
+		if (currentState == ChickenState.Free && controller.isGrounded) {
 			return true;
 		}
 		
