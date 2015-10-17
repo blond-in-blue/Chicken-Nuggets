@@ -2,6 +2,9 @@
 using System.Collections;
 
 [RequireComponent (typeof (ChickenControlBehavior))]
+/// <summary>
+/// Monitors player input and acts as an interface beween player controls and chicken functionality.
+/// </summary>
 public class PlayerBehavior : MonoBehaviour {
 
 	ChickenControlBehavior chickenController;
@@ -11,7 +14,9 @@ public class PlayerBehavior : MonoBehaviour {
 		chickenController = gameObject.GetComponent<ChickenControlBehavior>();
 	}
 
-	//Monitors input that the player will give
+	/// <summary>
+	/// Monitors input that the player will give
+	/// </summary>
 	void inputUpdate ()
 	{
 		if(Input.GetAxisRaw("Horizontal") > 0){
