@@ -15,18 +15,18 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// </summary>
 	private struct Percept {
 
-		int curHealth;
-		int numOfTeamates;
-		float[] teamatesHealths;
-		float[] teamatesDistancesFromUs;
-		float[] teamatesDistancesFromTarget;
+		public float curHealth;
+        public int numOfTeamates;
+        public float[] teamatesHealths;
+        public float[] teamatesDistancesFromUs;
+        public float[] teamatesDistancesFromTarget;
 
-		int targetHealth;
-		int numOfTargetAllies;
-		float[] targetsAlliesHealths;
-		float[] targetsAlliesDistancesFromTarget;
-		float[] targetsAlliesDistancesFromUs;
-		ChickenState targetState;
+        public float targetHealth;
+        public int numOfTargetAllies;
+        public float[] targetsAlliesHealths;
+        public float[] targetsAlliesDistancesFromTarget;
+        public float[] targetsAlliesDistancesFromUs;
+        public ChickenState targetState;
 
 	}
 
@@ -124,6 +124,40 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The appeal of attacking the target</returns>
 	/// <param name="percept">Percept, environment we're evaluating</param>
 	float appealOfAttacking(Percept percept){
+        // If the enemy is not dashing and we are at med-high health, we want to attack
+        if (target.getCurrentChickenState() != ChickenState.Dashing)
+        {
+            // If enemy is within attack range (roughly 3.4 units)
+            if (Vector3.Distance(target.transform.position, control.transform.position) <= 3.5)
+            {    
+                // If we have moderate HP
+                if (percept.curHealth / control.getMaxHealth() >= .45F)
+                {
+                    return 1;
+                }
+
+                // If we have subpar HP
+                if (percept.curHealth / control.getMaxHealth() < .45F)
+                {
+                    // If we have teammates nearby
+                    if (percept.numOfTeamates > 1)
+                    {
+                        return 1;
+                    }
+                    return 0.5F; // Attack if we must
+                }
+            }
+        }
+
+        // If enemy is dashing
+        if (target.getCurrentChickenState() == ChickenState.Dashing)
+        {
+            if (percept.curHealth / control.getMaxHealth() >= .45F)
+            {
+                return 0.5F; // If we have moderate HP, might as well attack
+            }
+            return 0.3F; // Only attack if we really need to
+        }
 		return 0;
 	}
 
@@ -135,6 +169,10 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The appeal of invading the target</returns>
 	/// <param name="percept">Percept, environment we're evaluating</param>
 	float appealOfEvading(Percept percept){
+        // If the enemy is dashing and we are low health, we want to evade
+        if (target.getCurrentChickenState() == ChickenState.Dashing){
+            return 1 - (percept.curHealth / control.getMaxHealth());
+        }
 		return 0;
 	}
 
@@ -156,13 +194,36 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	/// <returns>The percept at this instance.</returns>
 	Percept getPerceptAtThisInstance(){
 
-		//The distance we are away from our target.
-		//float distanceFromTarget = Vector3.Distance (this.transform.position, target.transform.position);
-		
-		//The state our target is in.
-		//ChickenState targetCurrentState = target.getCurrentChickenState ();
+        // Make a new Percept
+        Percept newPercept = new Percept();
 
-		return new Percept();
+        // Formula for distance of chickens, necessary for team calculations
+		//              The distance we are away from our target.
+		//              float distanceFromTarget = Vector3.Distance (control.transform.position, target.transform.position);
+		
+		
+
+        // Calculate values for all of percept fields in order of struct definition
+        float curHealth = control.getCurrentHealth();
+        // Find number of teammates and:
+        //              public float[] teamatesHealths;
+        //              public float[] teamatesDistancesFromUs;
+        //              public float[] teamatesDistancesFromTarget;
+
+        float targetHealth = target.getCurrentHealth();
+        //              public int numOfTargetAllies;
+        //              public float[] targetsAlliesHealths;
+        //              public float[] targetsAlliesDistancesFromTarget;
+        //              public float[] targetsAlliesDistancesFromUs;
+        ChickenState targetCurrentState = target.getCurrentChickenState();
+
+        // Now assign all values to the struct in order of struct definition
+        newPercept.curHealth = curHealth;
+        newPercept.targetHealth = targetHealth;
+        newPercept.targetState = targetCurrentState;
+
+        // Finally return the new Percept instance
+        return newPercept;
 	}
 
 

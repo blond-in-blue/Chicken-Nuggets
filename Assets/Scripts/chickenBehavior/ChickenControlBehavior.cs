@@ -26,8 +26,12 @@ public class ChickenControlBehavior : MonoBehaviour {
 	[SerializeField]
 	ChickenTeam team = ChickenTeam.Red;
 
-	[SerializeField]
-	float health = 5F;
+    private static float maxHealth = 20F; // For use in ChickenAttackAIBehavior
+
+    [SerializeField]
+    float health = maxHealth;
+
+    
 	
 	ChickenState currentState = ChickenState.Free;
 
@@ -46,6 +50,24 @@ public class ChickenControlBehavior : MonoBehaviour {
     public ChickenState getCurrentChickenState()
     {
         return currentState;
+    }
+
+    /// <summary>
+    /// Returns the max health of the chicken
+    /// </summary>
+    /// <returns> The maximum health of the chicken. </returns>
+    public float getMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    /// <summary>
+    /// Returns the current health of the chicken
+    /// </summary>
+    /// <returns> The current health of the chicken. </returns>
+    public float getCurrentHealth()
+    {
+        return health;
     }
 	
 	// Update is called once per frame
