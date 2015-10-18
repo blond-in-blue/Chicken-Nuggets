@@ -62,6 +62,7 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 			return;
 		}
 
+		control.setTarget (target.gameObject);
 		this.target = target;
 	}
 
@@ -166,9 +167,31 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 
 
 	/// <summary>
-	/// Attempt's to find a target for the AI to attack
+	/// Attempt's to find a target for the AI to attack.
+	/// Grabs the closest chicken not on it's team.
 	/// </summary>
 	void findTarget(){
+
+		ChickenControlBehavior[] chickens = GameState.getInstance ().getAllCharactersNotOnTeam(control.getChickensTeam());
+
+		if (chickens == null || chickens.Length == 0) {
+			return;
+		}
+
+		ChickenControlBehavior closestChicken = null;
+		float closestDistance = float.PositiveInfinity;
+		for(int i = 0; i < chickens.Length; i ++){
+
+			float curDist = Vector3.Distance(chickens[i].transform.position, control.transform.position);
+
+			if(curDist < closestDistance){
+				closestChicken = chickens[i];
+				closestDistance = curDist;
+			}
+
+		}
+
+		this.setTarget (closestChicken);
 
 	}
 

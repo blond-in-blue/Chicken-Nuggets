@@ -22,6 +22,8 @@ public class ChickenFactory {
 		chickenGameObject = (GameObject)Object.Instantiate (chickenGameObject, position, Quaternion.identity);
 		chickenGameObject.GetComponent<ChickenControlBehavior> ().setChickensTeam (team);
 
+		GameState.getInstance ().addCharacter (chickenGameObject.GetComponent<ChickenControlBehavior> ());
+
 		return chickenGameObject;
 
 	}
@@ -37,7 +39,9 @@ public class ChickenFactory {
 		GameObject chickenGameObject = Resources.Load("Chicken/Player") as GameObject;
 		chickenGameObject = (GameObject)Object.Instantiate (chickenGameObject, position, Quaternion.identity);
 		chickenGameObject.GetComponent<ChickenControlBehavior> ().setChickensTeam (team);
-		
+
+		GameState.getInstance ().addCharacter (chickenGameObject.GetComponent<ChickenControlBehavior> ());
+
 		return chickenGameObject;
 	}
 
