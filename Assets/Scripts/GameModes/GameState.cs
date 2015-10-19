@@ -27,6 +27,33 @@ public class GameState {
 
 	GameModeType currentGameBeingPlayed = GameModeType.None;
 
+
+
+	PlayerVersusComputerGameModeBehavior gameModeBeingPlayed;
+
+
+	/// <summary>
+	/// Gets the current game mode *object* being played.
+	/// This object is the behavior of the game mode which keeps up with spawning
+	/// and what not.
+	/// </summary>
+	/// <returns>The current mode being played.</returns>
+	public PlayerVersusComputerGameModeBehavior getCurrentModeBeingPlayed(){
+		return gameModeBeingPlayed;
+	}
+
+
+	/// <summary>
+	/// Sets the game mode being played.
+	/// Allows it to talk to the game mode to update it when a character dies,
+	/// or something else happpens such as ending game early.
+	/// </summary>
+	/// <param name="gameMode">Game mode.</param>
+	public void setGameModeBeingPlayed(PlayerVersusComputerGameModeBehavior gameMode){
+		this.gameModeBeingPlayed = gameMode;
+	}
+
+
 	//private constructor so only the GameState can create itself 
 	GameState(){
 		charactersInScene = new List<ChickenControlBehavior>();
@@ -60,6 +87,12 @@ public class GameState {
 		}
 
 		if(charactersInScene.Contains(chicken)){
+
+			//If we're playing a game right now..
+			if(gameModeBeingPlayed != null){
+				gameModeBeingPlayed.OnLivingThingDeath(chicken);
+			}
+
 			charactersInScene.Remove(chicken);
 		}
 

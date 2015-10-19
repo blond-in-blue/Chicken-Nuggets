@@ -45,7 +45,7 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if (target == null) {
+		if (target == null || target.getCurrentChickenState() == ChickenState.Dead) {
 			findTarget();
 		} else {
 			AIUpdate();

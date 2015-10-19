@@ -30,9 +30,8 @@ public class ChickenControlBehavior : MonoBehaviour {
 
     [SerializeField]
     float health = maxHealth;
-
-    
 	
+
 	ChickenState currentState = ChickenState.Free;
 
 	// Use this for initialization
@@ -142,6 +141,18 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 	}
 
+	void OnCollisionEnter(Collision collision){
+		if(collision.transform.tag == "BottomOfLevel"){
+			enterDeadState();
+		}
+	}
+
+	void OnTriggerEnter(Collider other) {
+		if(other.transform.tag == "BottomOfLevel"){
+			enterDeadState();
+		}
+	}
+
 	/// <summary>
 	/// This is called when one of our hitboxes collides with something while we're attacking.
 	/// </summary>
@@ -181,6 +192,11 @@ public class ChickenControlBehavior : MonoBehaviour {
 	/// </summary>
 	/// <param name="damageAmount">Damage amount.</param>
 	public void takeDamage(float damageAmount){
+
+		if (currentState == ChickenState.Dead) {
+			return;
+		}
+
 		currentState = ChickenState.TakingDamage;
 		damageStartTime = Time.time;
 		transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.red;
@@ -217,7 +233,11 @@ public class ChickenControlBehavior : MonoBehaviour {
 	/// </summary>
 	void enterDeadState(){
 		currentState = ChickenState.Dead;
+		GameState.getInstance ().removeCharacter (this);
+		timeOfDeath = Time.time;
 	}
+
+	float timeOfDeath;
 
 	/// <summary>
 	/// The Update function that is called when the chicken is dead.
@@ -234,6 +254,10 @@ public class ChickenControlBehavior : MonoBehaviour {
 		team = ChickenTeam.Dead;
 
 		transform.FindChild ("graphics").GetComponent<MeshRenderer> ().material.color = Color.green;
+
+		if(Time.time - timeOfDeath > 1f){
+			Destroy(gameObject);
+		}
 	
 	}
 

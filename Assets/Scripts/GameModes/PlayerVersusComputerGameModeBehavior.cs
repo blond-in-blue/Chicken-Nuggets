@@ -15,7 +15,10 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 		public GameObject point;
 		public Team teamAtStart;
 		public int priority;
-	}
+	} 
+
+	[SerializeField]
+	bool AIOnly = false;
 
 	[SerializeField]
 	SpawnPoint[] spawnPoints;
@@ -40,11 +43,27 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 
 	}
 
+	int teamOnePoints = 0;
+	int teamTwoPoints = 0;
+	void OnGUI(){
+
+		GUI.Box (new Rect(10,10,110,90),"");
+
+		GUI.Label (new Rect(20,20, 100,20), "Team One: "+teamOnePoints );
+
+		GUI.Label (new Rect(20,50, 100,20), "Team Two: "+teamTwoPoints );
+
+	}
+
 	/// <summary>
 	/// Starts the game off!
 	/// Spawns all players appropriately
 	/// </summary>
 	void startGame(){
+
+		GameState.getInstance ().setGameModeBeingPlayed (this);
+
+
 
 		Team currentTeamSpawning = Team.One;
 
@@ -64,7 +83,7 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 					if(spawnPoints[i].priority == teamMemberIndex && spawnPoints[i].teamAtStart == currentTeamSpawning){
 
 						//Spawn the players as the first chicken on the first team
-						if(currentTeamSpawning == Team.One && teamMemberIndex == 0){
+						if(currentTeamSpawning == Team.One && teamMemberIndex == 0 && !AIOnly){
 							ChickenFactory.createPlayerChicken(spawnPoints[i].point.transform.position, chickenTeam);
 						} 
 						else //Spawn a computer player
@@ -96,6 +115,21 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 
 
 	public void OnLivingThingDeath(ChickenControlBehavior chicken){
+
+		Vector3 spawnLocation = spawnPoints [Random.Range(0, spawnPoints.Length)].point.transform.position;
+
+		if (chicken.getChickensTeam () == ChickenTeam.Blue) {
+			teamTwoPoints ++;
+		} else {
+			teamOnePoints ++;
+		}
+
+		if (chicken.gameObject.GetComponent<PlayerBehavior> () != null) {
+			ChickenFactory.createPlayerChicken(spawnLocation, chicken.getChickensTeam());
+		} else {
+			ChickenFactory.createChicken(spawnLocation, chicken.getChickensTeam(), 0);
+		}
+
 
 	}
 
