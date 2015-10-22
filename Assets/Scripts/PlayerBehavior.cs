@@ -64,6 +64,12 @@ public class PlayerBehavior : MonoBehaviour {
 
 		inputUpdate ();
 
+        //Open main menu when pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.LoadLevel("MainMenuRework");
+        }
+
 	}
 
 }

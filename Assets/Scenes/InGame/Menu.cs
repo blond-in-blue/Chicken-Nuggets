@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿//I do not clame the rights to this code.
+//All concepts came from the video:
+//https://www.youtube.com/watch?v=QxRAIjXdfFU
+
+using UnityEngine;
 using System.Collections;
 
 public class Menu : MonoBehaviour {
@@ -7,6 +11,7 @@ public class Menu : MonoBehaviour {
     private Animator _animator;
     private CanvasGroup _canvasGroup;
 
+    //Basicly controlls the animator controller
     public bool IsOpen
     {
         get
@@ -20,6 +25,7 @@ public class Menu : MonoBehaviour {
 
     }
 
+    //Sets the amake state of the menues
     public void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -29,6 +35,8 @@ public class Menu : MonoBehaviour {
         rect.offsetMax = rect.offsetMin = new Vector2(0, 0);
     }
 
+
+    //Opens closes depending on state
     public void Update()
     {
         if (!(_animator.GetCurrentAnimatorStateInfo(0).IsName("Open")))

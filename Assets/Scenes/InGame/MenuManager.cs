@@ -1,4 +1,8 @@
-﻿//Things to do:
+﻿//I do not clame the rights to this code.
+//All concepts came from the video:
+//https://www.youtube.com/watch?v=QxRAIjXdfFU
+
+//Things to do:
 //  -When mouse hovers over button make a sound.
 //  -When button is clicked make a sound.
 //  -Menu transitions.
