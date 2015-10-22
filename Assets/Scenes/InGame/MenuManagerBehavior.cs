@@ -15,16 +15,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class MenuManager : MonoBehaviour {
+public class MenuManagerBehavior : MonoBehaviour {
 
-    public Menu CurrentMenu;
+    public MenuBehavior CurrentMenu;
 
     public void Start()
     {
         ShowMenu(CurrentMenu);
     }
 
-    public void ShowMenu(Menu menu)
+    public void ShowMenu(MenuBehavior menu)
     {
         if (CurrentMenu != null)
         {
