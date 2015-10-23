@@ -52,14 +52,10 @@ namespace UnityStandardAssets.Utility
 			transform.position -= currentRotation * Vector3.forward * distance;
 
 			// Set the height of the camera
-			//transform.position = new Vector3(transform.position.x ,currentHeight , transform.position.z);
-            transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
+			transform.position = new Vector3(transform.position.x ,currentHeight , transform.position.z);
 
 			// Always look at the target
-            transform.LookAt(target);
-            
-            // Now fix position of camera
-            transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
+			transform.LookAt(target);
 		}
 	}
 }
