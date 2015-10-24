@@ -61,8 +61,8 @@ public class ChickenAttackAIBehavior : MonoBehaviour {
 		if (target == null) {
 			return;
 		}
-
-		control.setTarget (target.gameObject);
+		
+		control.setTarget(target.gameObject);
 		this.target = target;
 	}
 

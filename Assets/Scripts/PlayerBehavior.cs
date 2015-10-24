@@ -52,10 +52,17 @@ public class PlayerBehavior : MonoBehaviour {
 
 			chickenController.moveBackward();
 		}
-
+		
+		// Jump
 		if(Input.GetButton("Jump")){
 			chickenController.attackForward();
 		}
+		
+		// Right click
+		// Target toggle
+		if(Input.GetMouseButtonDown(1)) {
+			targetModeToggle();
+		} 
 
 	}
 	
@@ -64,7 +71,7 @@ public class PlayerBehavior : MonoBehaviour {
 
 		inputUpdate ();
 
-        //Open main menu when pressed
+        // Open main menu when the pause button is pressed
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.LoadLevel("MainMenuRework");
@@ -72,4 +79,40 @@ public class PlayerBehavior : MonoBehaviour {
 
 	}
 
+	void targetModeToggle() {
+		
+			if (chickenController.getTarget() != null) {
+				// Set the target to null.
+				chickenController.setTarget(null);
+				Debug.Log("Target has been set to null.");
+				// Change player x-axis pivot to be reliant on camera direction.
+				
+			} else if (chickenController.getTarget() == null) {
+				// Set the target.
+				ChickenControlBehavior[] chickens = GameState.getInstance ().getAllCharactersNotOnTeam(chickenController.getChickensTeam());
+		
+				if (chickens == null || chickens.Length == 0) {
+					return;
+				}
+		
+				ChickenControlBehavior closestChicken = null;
+				float closestDistance = float.PositiveInfinity;
+				for(int i = 0; i < chickens.Length; i ++){
+		
+					float curDist = Vector3.Distance(chickens[i].transform.position, transform.position);
+		
+					if(curDist < closestDistance){
+						closestChicken = chickens[i];
+						closestDistance = curDist;
+					}
+		
+				}
+		
+				chickenController.setTarget (closestChicken.gameObject);
+				Debug.Log("Target has been set to closest chicken.");
+			}
+
+	}
+
 }
+
