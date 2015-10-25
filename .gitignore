@@ -59,7 +59,5 @@ Build
 .vscode
 Assets/VSCode
 Assets/VSCode.meta
-Assets/Plugins/*
-Assets/Plugins.meta
-Assets/Plugins 1/*
-Assets/Plugins 1.meta
+Assets/Plugins/VSCode
+Assets/Plugins/VSCode.meta
