@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+
 
 /// <summary>
 /// Factory meant to ease the insertion of Chickens into your scene by hiding creation logic
@@ -14,6 +18,9 @@ public class ChickenFactory {
 	/// <param name="position">Location where you want the chicken to spawn.</param>
 	/// <param name="team">Team.</param>
 	/// <param name="skillLevel">How skilled the chicken is on a scale from 0 to 1</param>
+    /// 
+    
+
 	public static GameObject createChicken(Vector3 position, ChickenTeam team, float skillLevel){
 
 		skillLevel = Mathf.Clamp (skillLevel, 0f, 1f);
@@ -23,6 +30,10 @@ public class ChickenFactory {
 		chickenGameObject.GetComponent<ChickenControlBehavior> ().setChickensTeam (team);
 
 		GameState.getInstance ().addCharacter (chickenGameObject.GetComponent<ChickenControlBehavior> ());
+
+        ///Add code to spawn text related to chicken.
+        List<string> names = new List<string>();
+
 
 		return chickenGameObject;
 
@@ -44,5 +55,26 @@ public class ChickenFactory {
 
 		return chickenGameObject;
 	}
+
+//   private string Loadnames(string filename)
+//   {
+//       string line;
+
+//        StreamReader Reading = new StreamReader("names.txt", Encoding.Default);
+
+//        using (Reading)
+//        {
+//            do
+//            {
+//                line = Reading.ReadLine();
+//                if (line != null)
+//                {
+//                    break;
+//                }
+//            }
+//       }
+//
+//           return "s";
+//    }
 
 }
