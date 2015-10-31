@@ -207,10 +207,8 @@ public class ChickenControlBehavior : MonoBehaviour {
 			return;
 		}
 
-		GameObject reference = Resources.Load ("takeDamage") as GameObject;
-		GameObject instance = Instantiate (reference, transform.position,Quaternion.identity) as GameObject;
+		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.TakeDamage);
 		
-		Destroy (instance, 2f);
 
 		// added check to see if player is dead
 		if (health <= 0) {
@@ -255,11 +253,8 @@ public class ChickenControlBehavior : MonoBehaviour {
 		GameState.getInstance ().removeCharacter (this);
 		timeOfDeath = Time.time;
 
-		GameObject reference = Resources.Load ("ParticleEmitter") as GameObject;
-		GameObject instance = Instantiate (reference, transform.position,Quaternion.identity) as GameObject;
+		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.ChickenDeath);
 		
-		Destroy (instance, 2f);
-
 		if (gameObject.GetComponent<PhotonView> () != null) {
 			GameObject.Find("Scripts").GetComponent<MatchmakingBehavior>().spawnLocalPlayer();
 			PhotonNetwork.Destroy(gameObject);
