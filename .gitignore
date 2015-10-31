@@ -59,4 +59,6 @@ Build
 .vscode
 Assets/VSCode
 Assets/VSCode.meta
-Assets/Plugins/*
+#Assets/Plugins/*
+Assets/Photon Unity Networking/Demos
+Assets/Photon Unity Networking/Demos/*

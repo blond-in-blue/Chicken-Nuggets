@@ -46,4 +46,10 @@ public class MenuManagerBehavior : MonoBehaviour {
         Application.Quit();
     }
 
+	public void Update(){
+		if(Input.GetKeyDown(KeyCode.M)){
+			Application.LoadLevel("NetworkingLobby");
+		}
+	}
+
 }
