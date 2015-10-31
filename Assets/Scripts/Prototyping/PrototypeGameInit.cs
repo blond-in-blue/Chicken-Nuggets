@@ -17,7 +17,8 @@ public class PrototypeGameInit : MonoBehaviour {
 		playerChickenBehavior.setTarget (enemy);
 
 		enemy.GetComponent<ChickenControlBehavior> ().setTarget (player);
-		enemy.GetComponent<ChickenAttackAIBehavior> ().setTarget (playerChickenBehavior);
+		// Disable enemy attack AI.
+		enemy.GetComponent<ChickenAttackAIBehavior>().enabled = false;
 
 	}
 	

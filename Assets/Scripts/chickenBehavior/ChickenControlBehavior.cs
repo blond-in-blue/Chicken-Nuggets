@@ -169,10 +169,17 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 			ChickenControlBehavior otherChicken = collision.gameObject.GetComponent<ChickenControlBehavior>();
 
-			if(otherChicken != null && otherChicken.team != team){//added here disables friendly fire
+			if(otherChicken != null && (otherChicken.team != team || otherChicken.team == ChickenTeam.None) ){//added here disables friendly fire
 			
-				otherChicken.takeDamage(power);
+				if(otherChicken.gameObject.GetComponent<NetworkChickenCharacter>() != null){
 
+					otherChicken.gameObject.GetComponent<PhotonView>().RPC("takeDamage",otherChicken.gameObject.GetComponent<PhotonView>().owner,power);
+
+				} else {
+
+					otherChicken.takeDamage(power);
+
+				}
 
 			} else if (collision.transform.tag == "Hitbox"){
 				//play a ting noise like in smashbros.
@@ -187,13 +194,25 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 	float damageStartTime = 0;
 
+
+
 	/// <summary>
 	/// Puts the chicken in a taking damage state and subtracts health from the chicken
 	/// </summary>
 	/// <param name="damageAmount">Damage amount.</param>
+	[PunRPC]
 	public void takeDamage(float damageAmount){
 
 		if (currentState == ChickenState.Dead) {
+			return;
+		}
+
+		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.TakeDamage);
+		
+
+		// added check to see if player is dead
+		if (health <= 0) {
+			enterDeadState();
 			return;
 		}
 
@@ -221,10 +240,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 			transform.FindChild("graphics").GetComponent<MeshRenderer>().material.color = Color.white;
 			currentState = ChickenState.Free;
 		}
-		// added check to see if player is dead
-		if (health <= 0) {
-			enterDeadState();
-		}
+
 
 	}
 
@@ -232,9 +248,18 @@ public class ChickenControlBehavior : MonoBehaviour {
 	/// Used to transition to the dead state.
 	/// </summary>
 	void enterDeadState(){
+
 		currentState = ChickenState.Dead;
 		GameState.getInstance ().removeCharacter (this);
 		timeOfDeath = Time.time;
+
+		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.ChickenDeath);
+		
+		if (gameObject.GetComponent<PhotonView> () != null) {
+			GameObject.Find("Scripts").GetComponent<MatchmakingBehavior>().spawnLocalPlayer();
+			PhotonNetwork.Destroy(gameObject);
+		}
+
 	}
 
 	float timeOfDeath;
