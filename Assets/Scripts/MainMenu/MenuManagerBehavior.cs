@@ -19,6 +19,7 @@ public class MenuManagerBehavior : MonoBehaviour {
 
     public MenuBehavior CurrentMenu;
     public AudioSource VolumeControl;
+    private bool IsOpen = false;
 
     public void Start()
     {
@@ -47,12 +48,20 @@ public class MenuManagerBehavior : MonoBehaviour {
         Application.Quit();
     }
 
+
 	public void Update(){
 		if(Input.GetKeyDown(KeyCode.M)){
 			Application.LoadLevel("NetworkingLobby");
 		}
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            //ShowMenu(CurrentMenu);
+            CurrentMenu.IsOpen = IsOpen;
+            IsOpen = !IsOpen;
+        }
 
 	}
+
 
 }

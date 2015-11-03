@@ -5,7 +5,7 @@ public class PauseMenuManager : MonoBehaviour {
 
     public PauseMenuBehavior CurrentMenu;
     public AudioSource VolumeControl;
-    private bool MenuIsOpen = false;
+    private bool IsOpen = true;
 
     public void Start()
     {
@@ -40,6 +40,12 @@ public class PauseMenuManager : MonoBehaviour {
         Application.Quit();
     }
 
+    public void closeMenu()
+    {
+        CurrentMenu.IsOpen = IsOpen;
+        IsOpen = !IsOpen;
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
@@ -47,20 +53,12 @@ public class PauseMenuManager : MonoBehaviour {
             Application.LoadLevel("NetworkingLobby");
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && CurrentMenu.IsOpen == false )
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ShowMenu(CurrentMenu);
-        
-
+            //ShowMenu(CurrentMenu);
+            CurrentMenu.IsOpen = IsOpen;
+            IsOpen = !IsOpen;
         }
-
-
-        //if (Input.GetKeyDown(KeyCode.Escape) && MenuIsOpen == true)
-        //{
-        //    CurrentMenu.IsOpen = false;
-        //    MenuIsOpen = false;
-        //}
-
 
     }
 

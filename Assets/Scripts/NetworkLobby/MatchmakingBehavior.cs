@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MatchmakingBehavior : Photon.PunBehaviour {
 
@@ -34,9 +35,30 @@ public class MatchmakingBehavior : Photon.PunBehaviour {
 
 		}
 
-		PhotonNetwork.playerName = GUI.TextField (new Rect(10,Screen.height-30,100,20), PhotonNetwork.playerName);
+
+		//PhotonNetwork.playerName = GUI.TextField (new Rect(10,Screen.height-30,100,20), PhotonNetwork.playerName);
 
 	}
+
+    public void SetPlayerName(UnityEngine.UI.Text name)
+    {
+        //Sets play name
+        PhotonNetwork.playerName = name.text;
+        Debug.Log(name.text);
+    }
+
+
+    public void JoinTeamA()
+    {
+        //Set team here
+
+
+    }
+
+    public void JoinTeamB()
+    {
+
+    }
 
 
 	public override void OnJoinedLobby()

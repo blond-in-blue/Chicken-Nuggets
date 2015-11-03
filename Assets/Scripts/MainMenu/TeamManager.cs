@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PauseMenuBehavior : MonoBehaviour {
+public class TeamManager : MonoBehaviour {
 
-    // Use this for initialization
+
     private Animator _animator;
     private CanvasGroup _canvasGroup;
 
