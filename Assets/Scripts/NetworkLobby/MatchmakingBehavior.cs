@@ -23,7 +23,7 @@ public class MatchmakingBehavior : Photon.PunBehaviour
         //Need If(TeamA or B)
         //Not sure how to handel diffrent teams
         //Therefore default team is A
-        if(Chi)
+        //if(Chi)
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
             TeamA = GameObject.Find("PanelA" + (i + 1));
