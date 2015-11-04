@@ -4,12 +4,7 @@ using UnityEngine.UI;
 
 public class MatchmakingBehavior : Photon.PunBehaviour {
 
-    // Use this for initialization
-    public GameObject TeamA;
-    public GameObject TeamB;
-    private Text PlayerName;
-    private Image AImage;
-
+	// Use this for initialization
 	void Start()
 	{
 		PhotonNetwork.ConnectUsingSettings("0.1");
@@ -18,48 +13,27 @@ public class MatchmakingBehavior : Photon.PunBehaviour {
 	void OnGUI()
 	{
 
-        //Need If(TeamA or B)
-        //Not sure how to handel diffrent teams
-        //Therefore default team is A
-        for(int i = 0; i < PhotonNetwork.playerList.Length; i++)
-        {
-            TeamA = GameObject.Find("PanelA" + (i + 1));
-            AImage = TeamA.GetComponent<Image>();
-            Debug.Log(PhotonNetwork.playerList[i].name);
-            if(PhotonNetwork.playerList[i].name != "")
-            {
-                AImage.enabled = true;
-            }
-            PlayerName = TeamA.GetComponentInChildren<Text>();
-            PlayerName.text = PhotonNetwork.playerList[i].name;
-        }
+		GUILayout.Label(PhotonNetwork.connectionState.ToString() + " - " + PhotonNetwork.connectionStateDetailed.ToString());
 
 
+		if(Input.GetKey(KeyCode.Keypad1)){
 
+			int leaderboardsWidth = 500;
+			int leaderboardsHeight = 500;
 
+			int startingX= (Screen.width / 2) - (leaderboardsWidth/2);
+			int startingY = (Screen.height / 2) - (leaderboardsHeight/2);
 
-
-		//GUILayout.Label(PhotonNetwork.connectionState.ToString() + " - " + PhotonNetwork.connectionStateDetailed.ToString());
-
-
-		//if(Input.GetKey(KeyCode.Keypad1)){
-
-		//	int leaderboardsWidth = 500;
-		//	int leaderboardsHeight = 500;
-
-		//	int startingX= (Screen.width / 2) - (leaderboardsWidth/2);
-		//	int startingY = (Screen.height / 2) - (leaderboardsHeight/2);
-
-		//	GUI.Box(new Rect(startingX, startingY,leaderboardsWidth,leaderboardsHeight),"Players: "+PhotonNetwork.playerList.Length);
+			GUI.Box(new Rect(startingX, startingY,leaderboardsWidth,leaderboardsHeight),"Players: "+PhotonNetwork.playerList.Length);
 			
-		//	for(int i = 0; i < PhotonNetwork.playerList.Length; i ++){
-		//		GUI.Box(new Rect(startingX+10, startingY + 20+(i*30), leaderboardsWidth-20, 30),PhotonNetwork.playerList[i].name);
-		//	}
+			for(int i = 0; i < PhotonNetwork.playerList.Length; i ++){
+				GUI.Box(new Rect(startingX+10, startingY + 20+(i*30), leaderboardsWidth-20, 30),PhotonNetwork.playerList[i].name);
+			}
 
-		//}
-		//if(PhotonNetwork.connectionState == ConnectionState.Connected){
+		}
+		if(PhotonNetwork.connectionState == ConnectionState.Connected){
 
-		//}
+		}
 
 
 		//PhotonNetwork.playerName = GUI.TextField (new Rect(10,Screen.height-30,100,20), PhotonNetwork.playerName);
