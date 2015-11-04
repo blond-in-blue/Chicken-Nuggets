@@ -18,12 +18,26 @@ using System.Collections;
 public class MenuManagerBehavior : MonoBehaviour {
 
     public MenuBehavior CurrentMenu;
-    public AudioSource VolumeControl;
-    private bool IsOpen = false;
+    public MenuBehavior PauseMenu;
+    public MenuBehavior PlayersOnServerMenu;
+    public MenuBehavior TeamAndPlayerInfoMenu;
+    private bool IsOpenCurrentMenu = true;
+    private bool IsOpenPauseMenu = true;
+    private bool IsOpenPlayersOnServerMenu = true;
+    private bool IsOpenTeamAndPlayerInfoMenu = true;
 
     public void Start()
     {
-        ShowMenu(CurrentMenu);
+        if(Application.loadedLevelName == "MainMenuRework")
+        {
+            ShowMenu(CurrentMenu);
+        }
+        
+        if(Application.loadedLevelName == "NetworkingLobby")
+        {
+            TeamAndPlayerInfoMenu.IsOpen = IsOpenTeamAndPlayerInfoMenu;
+            IsOpenTeamAndPlayerInfoMenu = !IsOpenTeamAndPlayerInfoMenu;
+        }
     }
 
     public void ShowMenu(MenuBehavior menu)
@@ -48,17 +62,30 @@ public class MenuManagerBehavior : MonoBehaviour {
         Application.Quit();
     }
 
+    public void ShowPause()
+    {
+        PauseMenu.IsOpen = IsOpenPauseMenu;
+        IsOpenPauseMenu = !IsOpenPauseMenu;
+    }
 
 	public void Update(){
-		if(Input.GetKeyDown(KeyCode.M)){
-			Application.LoadLevel("NetworkingLobby");
-		}
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //ShowMenu(CurrentMenu);
-            CurrentMenu.IsOpen = IsOpen;
-            IsOpen = !IsOpen;
+            PlayersOnServerMenu.IsOpen = IsOpenPlayersOnServerMenu;
+            IsOpenPlayersOnServerMenu = !IsOpenPlayersOnServerMenu;
+        }
+
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            TeamAndPlayerInfoMenu.IsOpen = IsOpenTeamAndPlayerInfoMenu;
+            IsOpenTeamAndPlayerInfoMenu = !IsOpenTeamAndPlayerInfoMenu;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseMenu.IsOpen = IsOpenPauseMenu;
+            IsOpenPauseMenu = !IsOpenPauseMenu;
         }
 
 	}
