@@ -15,6 +15,8 @@ public class SpecialEffectsFactory {
 
 		GameObject reference = null;
 
+		AudioClip soundEffectReference = null;
+
 		float lifeDuration = 3f;
 
 		//get the correct special effect from our resources
@@ -28,12 +30,21 @@ public class SpecialEffectsFactory {
 		case SpecialEffectType.TakeDamage:
 			lifeDuration = 1f;
 			reference = Resources.Load("Effects/TakeDamage") as GameObject;
+			soundEffectReference = Resources.Load("Effects/RightHook") as AudioClip;
 			break;
 
 		}
 
 		//create the object in the scene
 		GameObject effectInstance = Object.Instantiate(reference, position,Quaternion.identity) as GameObject;
+
+		//add sound effect if there is one to add
+		if(soundEffectReference != null){
+			effectInstance.AddComponent<AudioSource>();
+			effectInstance.GetComponent<AudioSource>().clip = soundEffectReference;
+			effectInstance.GetComponent<AudioSource>().playOnAwake = false;
+			effectInstance.GetComponent<AudioSource>().Play();
+		}
 
 		//Set the object to be destroyed in a certain amount of  time
 		Object.Destroy (effectInstance, lifeDuration);

@@ -109,7 +109,7 @@ public class ChickenControlBehavior : MonoBehaviour {
 	public void setChickensTeam(ChickenTeam team){
 		this.team = team;
 	}
-
+	
 	/// <summary>
 	/// Returns what the chicken is currentely focused on as it's target
 	/// </summary>
@@ -189,6 +189,24 @@ public class ChickenControlBehavior : MonoBehaviour {
 			stopDashing();
 		}
 
+	}
+	
+	void rotateLeft(){
+		transform.Rotate(Vector3.up * Input.GetAxis("Mouse X"), Space.World);
+			 
+		// Maintain Z-axis rotation at zero.
+		Quaternion chickenRotation = transform.rotation;
+		chickenRotation.z = 0;
+		transform.rotation = chickenRotation;
+	}
+	
+	void rotateRight(float intensity){
+		transform.Rotate(Vector3.up * Input.GetAxis("Mouse X"), Space.World);
+			 
+		// Maintain Z-axis rotation at zero.
+		Quaternion chickenRotation = transform.rotation;
+		chickenRotation.z = 0;
+		transform.rotation = chickenRotation;
 	}
 
 

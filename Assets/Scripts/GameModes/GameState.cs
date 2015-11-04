@@ -27,8 +27,6 @@ public class GameState {
 
 	GameModeType currentGameBeingPlayed = GameModeType.None;
 
-
-
 	PlayerVersusComputerGameModeBehavior gameModeBeingPlayed;
 
 

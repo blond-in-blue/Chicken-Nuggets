@@ -8,6 +8,11 @@ using System.Collections;
 public class PlayerBehavior : MonoBehaviour {
 
 	ChickenControlBehavior chickenController;
+	
+	//The speed at which the player is rotated relative to mouse movement
+	int mouseSensitivity = 5;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -59,10 +64,37 @@ public class PlayerBehavior : MonoBehaviour {
 		}
 		
 		// Right click
-		// Target toggle
+		// Target mode toggle
 		if(Input.GetMouseButtonDown(1)) {
 			targetModeToggle();
 		} 
+		
+		// When the player is not currently targeting an object.
+		if (chickenController.getTarget() == null) {
+			 
+			 // Rotate the chicken and camera concurrently on the X-axis with mouse movement.
+			 if(Input.GetAxis("Mouse X") != 0){
+				 transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity , Space.World);
+
+			 }
+			 
+			 // Rotate the camera around the chicken on Y-axis with mouse movement.
+			 float mouseYAxis = Input.GetAxis("Mouse Y");
+			 if(mouseYAxis != 0){
+				 transform.Find("Main Camera").transform.RotateAround(transform.position, transform.TransformDirection(-1,0,0), mouseYAxis * mouseSensitivity);
+				 
+				 if (mouseYAxis < 0) {
+					  
+				 }
+			 }
+			 
+			 // Update the positions of the X and Y axes.
+
+			 // Always look at the chicken.
+			 //transform.Find("Main Camera").transform.LookAt(transform.position);
+		} else if (chickenController.getTarget() != null) {
+			 //transform.Find("Main Camera").transform.LookAt(chickenController.getTarget());
+		}
 
 	}
 	
@@ -80,8 +112,10 @@ public class PlayerBehavior : MonoBehaviour {
 				// Set the target to null.
 				chickenController.setTarget(null);
 				Debug.Log("Target has been set to null.");
-				// Change player x-axis pivot to be reliant on camera direction.
 				
+				// Enable free-look camera.
+				// There is no target, so allow the chicken to rotate on the x-axis using mouse movement.
+
 			} else if (chickenController.getTarget() == null) {
 				// Set the target.
 				ChickenControlBehavior[] chickens = GameState.getInstance ().getAllCharactersNotOnTeam(chickenController.getChickensTeam());

@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 m_EditorVersion: 5.2.1f1
+=======
+<<<<<<< Updated upstream
+m_EditorVersion: 5.1.2f1
+=======
+m_EditorVersion: 5.2.2f1
+>>>>>>> Stashed changes
+>>>>>>> refs/remotes/Blond-in-Blue/master
 m_StandardAssetsVersion: 0
