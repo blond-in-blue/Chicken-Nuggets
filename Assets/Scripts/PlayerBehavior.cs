@@ -80,13 +80,25 @@ public class PlayerBehavior : MonoBehaviour {
 			 
 			 // Rotate the camera around the chicken on Y-axis with mouse movement.
 			 float mouseYAxis = Input.GetAxis("Mouse Y");
-			 if(mouseYAxis != 0){
-				 transform.Find("Main Camera").transform.RotateAround(transform.position, transform.TransformDirection(-1,0,0), mouseYAxis * mouseSensitivity);
-				 
-				 if (mouseYAxis < 0) {
-					  
-				 }
-			 }
+
+			if(mouseYAxis != 0){
+
+				//Debug.Log(mouseYAxis+" : "+ transform.Find("Main Camera").transform.localRotation);
+
+				if (( mouseYAxis > 0 && transform.Find("Main Camera").transform.localRotation.x > -.2 ) 
+				    || ( mouseYAxis < 0 && transform.Find("Main Camera").transform.rotation.x < .4 ) 
+				    ) {
+
+					transform.Find("Main Camera").transform.RotateAround(transform.position, transform.TransformDirection(-1,0,0), mouseYAxis * mouseSensitivity);
+
+//					Quaternion rot = transform.Find("Main Camera").transform.localRotation;
+//					rot.x = Mathf.Clamp(transform.Find("Main Camera").transform.localRotation.x, -.2f, .4f);
+//					transform.Find("Main Camera").transform.localRotation = rot;
+
+				}
+
+
+			}
 			 
 			 // Update the positions of the X and Y axes.
 

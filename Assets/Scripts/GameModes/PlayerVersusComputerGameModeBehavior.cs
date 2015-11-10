@@ -6,7 +6,7 @@ using System.Collections;
 /// should be executed.  Makes sure characters are appropriately spawned and
 /// keeps up with score and respawning, and when the game is over
 /// </summary>
-public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
+public class PlayerVersusComputerGameModeBehavior : MonoBehaviour, IGameMode {
 
 	enum Team{ One, Two }
 
@@ -114,7 +114,7 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 	}
 
 
-	public void OnLivingThingDeath(ChickenControlBehavior chicken){
+	public void onLivingThingDeath(ChickenControlBehavior chicken){
 
 		Vector3 spawnLocation = spawnPoints [Random.Range(0, spawnPoints.Length)].point.transform.position;
 
@@ -130,6 +130,10 @@ public class PlayerVersusComputerGameModeBehavior : MonoBehaviour {
 			ChickenFactory.createChicken(spawnLocation, chicken.getChickensTeam(), 0);
 		}
 
+	}
+
+
+	public void gameModeStart(){
 
 	}
 

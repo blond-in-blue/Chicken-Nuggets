@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,8 +27,7 @@ public class GameState {
 
 	GameModeType currentGameBeingPlayed = GameModeType.None;
 
-	PlayerVersusComputerGameModeBehavior gameModeBeingPlayed;
-
+	IGameMode gameModeBeingPlayed;
 
 	/// <summary>
 	/// Gets the current game mode *object* being played.
@@ -36,7 +35,7 @@ public class GameState {
 	/// and what not.
 	/// </summary>
 	/// <returns>The current mode being played.</returns>
-	public PlayerVersusComputerGameModeBehavior getCurrentModeBeingPlayed(){
+	public IGameMode getCurrentModeBeingPlayed(){
 		return gameModeBeingPlayed;
 	}
 
@@ -88,7 +87,7 @@ public class GameState {
 
 			//If we're playing a game right now..
 			if(gameModeBeingPlayed != null){
-				gameModeBeingPlayed.OnLivingThingDeath(chicken);
+				gameModeBeingPlayed.onLivingThingDeath(chicken);
 			}
 
 			charactersInScene.Remove(chicken);

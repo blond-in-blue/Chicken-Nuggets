@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MatchmakingBehavior : Photon.PunBehaviour {
+public class MatchmakingBehavior : Photon.PunBehaviour, IGameMode {
 
 	// Use this for initialization
 	void Start()
@@ -30,9 +30,6 @@ public class MatchmakingBehavior : Photon.PunBehaviour {
 			}
 
 		}
-		if(PhotonNetwork.connectionState == ConnectionState.Connected){
-
-		}
 
 		PhotonNetwork.playerName = GUI.TextField (new Rect(10,Screen.height-30,100,20), PhotonNetwork.playerName);
 
@@ -55,14 +52,19 @@ public class MatchmakingBehavior : Photon.PunBehaviour {
 	void OnJoinedRoom()
 	{
 		Debug.Log ("Joined Room!");
-		spawnLocalPlayer ();
+		ChickenFactory.createNetworkPlayerChicken (new Vector3(0, 1, 0), ChickenTeam.None);
 	}
 
-	public void spawnLocalPlayer(){
-		GameObject chicken = PhotonNetwork.Instantiate("Chicken/NetworkingPlayer", Vector3.up, Quaternion.identity, 0);
-		chicken.GetComponent<PlayerBehavior>().enabled = true;
-		chicken.transform.FindChild ("Main Camera").GetComponent<Camera>().enabled = true;
-		chicken.transform.FindChild ("Main Camera").GetComponent<AudioListener>().enabled = true;
+
+
+
+	public void onLivingThingDeath(ChickenControlBehavior chicken){
+
+	}
+
+
+	public void gameModeStart(){
+
 	}
 
 }

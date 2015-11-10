@@ -28,6 +28,7 @@ public class ChickenFactory {
 
 	}
 
+
 	/// <summary>
 	/// Creates the player chicken.
 	/// </summary>
@@ -43,6 +44,32 @@ public class ChickenFactory {
 		GameState.getInstance ().addCharacter (chickenGameObject.GetComponent<ChickenControlBehavior> ());
 
 		return chickenGameObject;
+	
+	}
+
+
+	/// <summary>
+	/// Creates the player chicken.
+	/// Meant for only play.  Set up for Networking.
+	/// </summary>
+	/// <returns>The player chicken.</returns>
+	/// <param name="position">Location where you want the chicken to spawn.</param>
+	/// <param name="team">The team the player will be fighting for.</param>
+	public static GameObject createNetworkPlayerChicken(Vector3 position, ChickenTeam team){
+		
+		GameObject chicken = PhotonNetwork.Instantiate("Chicken/NetworkingPlayer", Vector3.up, Quaternion.identity, 0);
+
+		chicken.GetComponent<PlayerBehavior>().enabled = true;
+
+		chicken.GetComponent<ChickenControlBehavior> ().setChickensTeam (team);
+
+		chicken.transform.FindChild ("Main Camera").GetComponent<Camera>().enabled = true;
+		chicken.transform.FindChild ("Main Camera").GetComponent<AudioListener>().enabled = true;
+
+		GameState.getInstance ().addCharacter (chicken.GetComponent<ChickenControlBehavior> ());
+		
+		return chicken;
+		
 	}
 
 }

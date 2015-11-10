@@ -171,9 +171,11 @@ public class ChickenControlBehavior : MonoBehaviour {
 
 			if(otherChicken != null && (otherChicken.team != team || otherChicken.team == ChickenTeam.None) ){//added here disables friendly fire
 			
-				if(otherChicken.gameObject.GetComponent<NetworkChickenCharacter>() != null){
+				if( otherChicken.gameObject.GetComponent<NetworkChickenCharacter>() != null ){
 
+					SpecialEffectsFactory.createEffect (otherChicken.gameObject.transform.position, SpecialEffectType.TakeDamage);
 					otherChicken.gameObject.GetComponent<PhotonView>().RPC("takeDamage",otherChicken.gameObject.GetComponent<PhotonView>().owner,power);
+					//otherChicken.gameObject.GetComponent<PhotonView>().RPC("takeDamage",PhotonTargets.All,power);
 
 				} else {
 
@@ -226,7 +228,6 @@ public class ChickenControlBehavior : MonoBehaviour {
 		}
 
 		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.TakeDamage);
-		
 
 		// added check to see if player is dead
 		if (health <= 0) {
@@ -268,14 +269,18 @@ public class ChickenControlBehavior : MonoBehaviour {
 	void enterDeadState(){
 
 		currentState = ChickenState.Dead;
+
 		GameState.getInstance ().removeCharacter (this);
+
 		timeOfDeath = Time.time;
 
 		SpecialEffectsFactory.createEffect (transform.position, SpecialEffectType.ChickenDeath);
 		
 		if (gameObject.GetComponent<PhotonView> () != null) {
-			GameObject.Find("Scripts").GetComponent<MatchmakingBehavior>().spawnLocalPlayer();
+
+			ChickenFactory.createNetworkPlayerChicken(new Vector3(0,1,0),ChickenTeam.None);
 			PhotonNetwork.Destroy(gameObject);
+
 		}
 
 	}

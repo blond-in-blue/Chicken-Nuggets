@@ -13,6 +13,9 @@ public class SpecialEffectsFactory {
 	/// <param name="position">Position of where the effect is to be created.</param>
 	public static GameObject createEffect(Vector3 position, SpecialEffectType effectType){
 
+		Debug.LogError ("Don't Pick Monday Night for club meetings\n" +
+			"Maybe 4:30 or 5.");
+
 		GameObject reference = null;
 
 		AudioClip soundEffectReference = null;
@@ -25,6 +28,7 @@ public class SpecialEffectsFactory {
 		case SpecialEffectType.ChickenDeath:
 			lifeDuration = 3f;
 			reference = Resources.Load("Effects/ChickenDeath") as GameObject;
+			soundEffectReference = Resources.Load("Effects/Death") as AudioClip;
 			break;
 
 		case SpecialEffectType.TakeDamage:

@@ -41,9 +41,7 @@ public class NetworkChickenCharacter : Photon.MonoBehaviour
 
 		if(chicken != null){
 			chicken.takeDamage(amount);
-
 		}
-
 
 	}
 
