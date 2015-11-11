@@ -42,6 +42,11 @@ public class MenuManagerBehavior : MonoBehaviour
         }
     }
 
+    public void CloseMenu()
+    {
+        CurrentMenu.IsOpen = false;
+    }
+
     public void ShowMenu(MenuBehavior menu)
     {
         if (CurrentMenu != null)
@@ -93,8 +98,5 @@ public class MenuManagerBehavior : MonoBehaviour
             IsOpenPauseMenu = !IsOpenPauseMenu;
             //Debug.Log("OpenPauseMenu");
         }
-
     }
-
-
 }
