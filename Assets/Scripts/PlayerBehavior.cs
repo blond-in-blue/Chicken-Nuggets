@@ -115,11 +115,6 @@ public class PlayerBehavior : MonoBehaviour {
 
 		inputUpdate ();
 
-        // Open main menu when the pause button is pressed
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.LoadLevel("MainMenuRework");
-        }
 
 	}
 
