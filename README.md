@@ -1,5 +1,5 @@
 # Chicken-Nuggets
-A Unity3D project for the video game development club 2015 Fall Semester.
+A Unity3D project for the Video Game Development Club 2015 fall semester.
 
 ## Contributing
 To contribute to the project please create a fork and open PRs to the master.  Make sure everyone know's what functionality your working on!
